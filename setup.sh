@@ -80,6 +80,21 @@ fi
 # ─── Step 2: Create workspace ────────────────────────────────────
 echo "  [2/7] Creating workspace..."
 mkdir -p "$WORKSPACE/.claude"
+mkdir -p "$WORKSPACE/.memsearch/memory"
+mkdir -p "$WORKSPACE/outputs"
+mkdir -p "$WORKSPACE/logs"
+
+# Initialize memory index
+if [ ! -f "$WORKSPACE/.memsearch/memory/MEMORY.md" ]; then
+  cat > "$WORKSPACE/.memsearch/memory/MEMORY.md" << 'MEMEOF'
+# Memory Index
+
+## Notes
+- Memory files are stored here automatically by Claude
+- Each session creates/updates daily logs in this directory
+MEMEOF
+fi
+
 echo "         $WORKSPACE ✓"
 
 # ─── Step 3: Validate gateway key ────────────────────────────────

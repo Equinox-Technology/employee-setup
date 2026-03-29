@@ -15,79 +15,67 @@ DTC furniture and home goods company based in Jakarta, ~20 employees. 6 brands t
 | Designito | Shopify | designito.com |
 
 ## Your API Access
-You have a personal gateway key (`EQX_GATEWAY_KEY` in your `.env`). This key gives you access to company services through the Equinox Gateway at `api.equinoxcell.com`.
+Your gateway key is in `.env` as `EQX_GATEWAY_KEY`. All API calls go through the Equinox Gateway at `api.equinoxcell.com`.
 
-**Never share your gateway key.** If you leave the company, it gets revoked instantly. If you suspect it's compromised, notify Laurent immediately.
+**Never share your gateway key.** If compromised, notify Laurent immediately.
 
 ### How to use the gateway
-All API calls go through the gateway. You never need (or have) raw API keys.
-
 ```bash
-# Example: Get TPH Shopify orders
+# Get TPH Shopify orders
 curl -H "x-gateway-key: $EQX_GATEWAY_KEY" \
   https://api.equinoxcell.com/api/proxy/tph-shopify/orders.json
 
-# Example: Get Sohnne WooCommerce orders (read only)
+# Get Sohnne WooCommerce orders (read only)
 curl -H "x-gateway-key: $EQX_GATEWAY_KEY" \
   https://api.equinoxcell.com/api/proxy/sohnne-woo-read-only/wp-json/wc/v3/orders
 
-# Example: Get GA4 data
-curl -H "x-gateway-key: $EQX_GATEWAY_KEY" \
-  https://api.equinoxcell.com/api/proxy/sohnne-ga4/properties/321024703:runReport
+# Or use the helper script
+./gateway.sh tph-shopify orders.json
+./gateway.sh list    # see all services
 ```
 
-### Available services
-Check your permissions at https://api.equinoxcell.com (sign in with your @equinoxcell.com Google account).
-
+### Available Services
 | Service ID | Description |
 |---|---|
 | `sohnne-woo-read-only` | Sohnne orders, products, customers (view only) |
-| `sohnne-woo-read-write` | Sohnne orders, products (create/edit — admin only) |
-| `tph-shopify` | The Panel Hub Shopify Admin API |
-| `enigwatch-shopify` | Enigwatch Shopify Admin API |
-| `sofatica-shopify` | Sofatica Shopify Admin API |
-| `vertu-shopify` | Vertu Living Shopify Admin API |
-| `designito-shopify` | Designito Shopify Admin API |
+| `tph-shopify` | The Panel Hub Shopify |
+| `enigwatch-shopify` | Enigwatch Shopify |
+| `sofatica-shopify` | Sofatica Shopify |
+| `vertu-shopify` | Vertu Living Shopify |
+| `designito-shopify` | Designito Shopify |
 | `sohnne-ga4` | Sohnne Google Analytics 4 |
+| `gsc` | Google Search Console |
+| `gmc` | Google Merchant Center |
 | `pagespeed` | Google PageSpeed Insights |
 | `stripe` | Stripe payments |
-| `cloudflare` | Cloudflare DNS/CDN |
-| `paypal` | PayPal payments |
 | `klaviyo` | Klaviyo email marketing |
-| `simplesat` | SimpleSat customer satisfaction |
-| `tavily` | Tavily search API |
+| `clarity-sohnne` | Microsoft Clarity (Sohnne) |
+| `clarity-sofatica` | Microsoft Clarity (Sofatica) |
+| `clarity-enigwatch` | Microsoft Clarity (Enigwatch) |
+| `cloudflare` | Cloudflare DNS/CDN |
+
+## MCP Tools (what Claude can do for you)
+Claude has 27 tools connected through the Equinox MCP server. Just ask in natural language:
+
+**Orders:** "Show me Sohnne orders this week" / "Get TPH revenue last 30 days"
+**Products:** "Show Enigwatch products" / "Search Sohnne products for 'Eames'"
+**Analytics:** "Get GA4 sessions for Sohnne" / "Run PageSpeed on sofatica.com"
+**SEO:** "Get GSC search queries for sohnne.com" / "Semrush overview of thepanelhub.com"
+**Email:** "Show recent Klaviyo campaigns" / "Get Klaviyo flows"
+**Payments:** "Check Stripe balance" / "Show recent Stripe charges"
+**Performance:** "Get Clarity dashboard for Sofatica" / "Check GMC product issues"
+**Summary:** "Revenue across all 6 brands this week"
 
 ## Work Guidelines
-
-### Communication
-- English for all documentation and code
-- Be data-driven — back decisions with numbers
-- Concise and actionable — no fluff
-
-### Code Standards
+- English for all docs and code
+- Data-driven — back decisions with numbers
 - Never hardcode credentials — use `.env` files
-- Test before pushing to production
-- WooCommerce: always test on staging first
-- Shopify: use Shopify CLI for theme changes
-
-### SEO Standards
-- Every page: unique title (60 chars), meta description (155 chars), H1, schema
-- Products: Product schema with price, availability, reviews, materials
-- Ask: is this the best result for its target keyword?
-
-### Frontend Standards
-- Mobile-first design
-- Core Web Vitals targets: <2.5s LCP, <100ms INP, <0.1 CLS
-- Max 2 fonts per brand, high-contrast CTAs
-
-### CRM Escalation Ladder
-proof → apology → store credit → partial refund → replacement → full refund
+- Mobile-first frontend, Core Web Vitals: <2.5s LCP, <100ms INP, <0.1 CLS
+- SEO: unique title (60ch), meta desc (155ch), H1, schema on every page
+- CRM escalation: proof → apology → store credit → partial refund → replacement → full refund
 
 ## Dashboard
-View service health, your API key status, and audit logs:
-https://api.equinoxcell.com (sign in with Google)
+https://api.equinoxcell.com (Google sign-in with @equinoxcell.com)
 
 ## Need Help?
-- API access issues → message Laurent on Slack
-- New service access → request through the dashboard
-- Technical questions → ask Claude (that's why you're here)
+Message Laurent on Slack or ask Claude.
